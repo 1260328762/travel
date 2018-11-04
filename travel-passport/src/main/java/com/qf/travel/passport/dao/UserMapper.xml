@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.travel.passport.dao.UserMapper">
+
+    <sql id="baseSql">
+        id,username,password,salt,locked
+    </sql>
+
+
+    <!--根据用户名查询-->
+    <select id="selectByUsername" resultType="User">
+        SELECT
+        <include refid="baseSql"/>
+        FROM users WHERE username=#{username}
+    </select>
+
+
+    <!--根据用户名查询角色-->
+    <select id="selectRolesByUsername" resultType="String">
+        SELECT role_name FROM user_roles WHERE username=#{username};
+    </select>
+</mapper>

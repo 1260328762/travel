@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>travel-parent</artifactId>
+        <groupId>com.qf</groupId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../travel-parent/pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <modules>
+        <module>travel-manager-dao</module>
+        <module>travel-manager-interface</module>
+        <module>travel-manager-pojo</module>
+        <module>travel-manager-service</module>
+        <module>travel-manager-web</module>
+    </modules>
+    <artifactId>travel-manager</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.qf</groupId>
+            <artifactId>travel-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+</project>

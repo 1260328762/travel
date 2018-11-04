@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.travel.manager.dao.TbPicMapper">
+
+
+    <sql id="baseSql">
+      id,picname,url,content,groupid
+    </sql>
+
+    <insert id="insertImage" parameterType="com.qf.travel.common.pojo.po.TbPic">
+        INSERT INTO tb_pic (picname,url,content,groupid) VALUES (#{picname},#{url},#{content},#{groupid})
+    </insert>
+
+
+    <select id="listPicByPage" parameterType="com.qf.travel.common.pojo.dto.PageInfo"  resultType="com.qf.travel.common.pojo.po.TbPic">
+        SELECT
+        <include refid="baseSql"/>
+        FROM  tb_pic LIMIT #{offset},#{limit}
+    </select>
+
+</mapper>

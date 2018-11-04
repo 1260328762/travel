@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.travel.manager.dao.HotelCustomMapper">
+
+
+    <sql id="baseSql">
+      h.id, h.name, h.content, h.num, h.restof,h.price, h.image, h.cid, h.status, h.created, h.updated, c.name
+    </sql>
+
+    <sql id="base_insert">
+        name, content, num, restof, price, image, cid, created, updated
+    </sql>
+
+    <sql id="column_Where">
+        <where>
+            h.status != 3
+            <if test="hotel!=null and hotel.name !=null and hotel.name !=''">
+                AND h.name LIKE "%"#{hotel.name}"%"
+            </if>
+        </where>
+    </sql>
+
+    <!--插入酒店-->
+    <insert id="hotelInsert" parameterType="com.qf.travel.manager.pojo.po.TbHotelCustom">
+        <selectKey order="AFTER" keyColumn="id" keyProperty="id" resultType="com.qf.travel.manager.pojo.po.TbHotelCustom">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+        INSERT INTO tb_hotel
+        (<include refid="base_insert"/>)
+        VALUES(#{name},#{content},#{num},#{restof},#{price},#{image},#{cid},#{created},#{updated})
+    </insert>
+
+
+    <!--更新酒店-->
+    <update id="updateHotel" parameterType="com.qf.travel.manager.pojo.po.TbHotelCustom">
+       UPDATE tb_hotel SET
+       name = #{name}, content=#{content}, num=#{num}, restof=#{restof},
+       price=#{price}, cid=#{cid}, updated=#{updated}
+       WHERE id = #{id}
+    </update>
+
+    <!--查询总数-->
+    <select id="getCount" resultType="long">
+        SELECT
+        COUNT(1)
+        FROM tb_hotel h
+        <include refid="column_Where"/>
+    </select>
+
+
+    <!--分页模糊查询-->
+    <select id="hotelList" resultType="com.qf.travel.manager.pojo.po.TbHotelCustom">
+        SELECT
+        <include refid="baseSql"/>
+        FROM tb_hotel h LEFT JOIN tb_hotel_cat c
+        ON h.cid = c.id
+        <include refid="column_Where"/>
+        ORDER BY id DESC
+        LIMIT #{page.offset},#{page.limit}
+    </select>
+    
+
+    <!--查询所有酒店分类-->
+    <select id="HotelCatList" resultType="com.qf.travel.manager.pojo.po.TbHotelCat">
+        SELECT id,name FROM tb_hotel_cat
+    </select>
+
+
+    <!--根据主键查-->
+    <select id="selectHotelById" parameterType="com.qf.travel.manager.pojo.po.TbHotelCustom" resultType="com.qf.travel.manager.pojo.po.TbHotelCustom">
+        SELECT
+        id, name, content, num, restof, price, image,cid,updated
+        FROM tb_hotel
+        WHERE id = #{id}
+    </select>
+
+
+    <!--根据状态值查询-->
+    <select id="selectHotelByStatus" parameterType="com.qf.travel.manager.pojo.po.TbHotelCustom" resultType="com.qf.travel.manager.pojo.po.TbHotelCustom">
+        SELECT
+        id, name, content, num, restof, price,image ,cid,updated
+        FROM tb_hotel
+        WHERE status = 1
+    </select>
+</mapper>

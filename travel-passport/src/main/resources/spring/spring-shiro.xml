@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="myShiroRealm" class="com.qf.travel.passport.shirofilter.MyShiroRealm"/>
+
+    <!--配置权限增强,开启注解形式编程-->
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <!--配置shiro缓存,减少数据库压力-->
+    <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"/>
+
+    <!--安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myShiroRealm"/>
+        <property name="cacheManager" ref="cacheManager"/>
+    </bean>
+
+
+    <!--配置shiro的web过滤器-->
+    <!--<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">-->
+        <!--<property name="securityManager" ref="securityManager"/>-->
+        <!--<property name="loginUrl" value="/login"/>-->
+        <!--<property name="successUrl" value="/index"/>-->
+        <!--<property name="unauthorizedUrl" value="error"/>-->
+        <!--<property name="filterChainDefinitions">-->
+            <!--<value>-->
+                <!--/login=anon-->
+                <!--/index=authc-->
+                <!--/menu=authc,roles[admin,test]-->
+            <!--</value>-->
+        <!--</property>-->
+
+        <!--&lt;!&ndash;配置自定义的filter&ndash;&gt;-->
+        <!--<property name="filters">-->
+            <!--<map>-->
+                <!--<entry key="roles">-->
+                    <!--<bean class="com.qf.travel.passport.shirofilter.PermissionFilter"/>-->
+                <!--</entry>-->
+            <!--</map>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--使用自己的shiro过滤器-->
+    <bean id="shiroFilter" class="com.qf.travel.passport.shirofilter.MyShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login"/>
+        <property name="successUrl" value="/index"/>
+        <property name="unauthorizedUrl" value="error"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /login=anon
+                /index=authc
+                /menu=authc,roles[admin,test]
+            </value>
+        </property>
+
+        <!--配置自定义的filter-->
+        <property name="filters">
+            <map>
+                <entry key="roles">
+                    <bean class="com.qf.travel.passport.shirofilter.PermissionFilter"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>

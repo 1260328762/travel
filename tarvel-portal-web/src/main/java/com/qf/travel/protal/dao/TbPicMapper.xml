@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.travel.protal.dao.TbPicMapper" >
+
+  <sql id="baseSql">
+    id,picname,content,url
+  </sql>
+
+  <select id="listPicByGroupId" resultType="com.qf.travel.common.pojo.po.TbPic">
+    SELECT
+    <include refid="baseSql"/>
+    FROM tb_pic WHERE groupid=#{groupid}
+  </select>
+
+
+</mapper>
